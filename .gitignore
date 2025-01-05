@@ -1,5 +1,6 @@
 # Godot specific ignores
 .godot/
+/android/
 *.tmp
 *.import
 .import/
@@ -22,11 +23,11 @@ mono_crash.*.json
 .DS_Store
 *~
 
-# Android ignores
+# My android ignores
 keystore/
 android/
 
-#
+# DLL
 *.dll
 *.dylib
 *.so

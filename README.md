@@ -1,27 +1,24 @@
-# Equation Real Solver
-Functions on GDScript for finding real roots of polynomial equations of degree up to 4 (quartic).
+# Real Equation Solver
+Equation solver for finding real roots of equations up to 4th degree for Godot.
 
 ## Usage
 Functions take a value of type float and return a sorted array of real roots.
 If there are no roots, return an empty array.
 
-### Examples
+### Methods
 ```gdscript
-func example():
-	var roots: Array[float] = Equation.quartic_solve_real(1, -10, 35, -50, 24)
-	print(roots) # Prints "[1, 2, 3, 4]"
-
-	roots = Equation.cubic_solve_real(2, -11, 12, 9)
-	print(roots) # Prints "[-0.5, 3]"
+float cbrt(x: float)
+float solve_linear(a: float, b: float)
+Array[float] solve_quadratic(a: float, b: float, c: float)
+Array[float] solve_cubic(a: float, b: float, c: float, d: float)
+Array[float] solve_quartic(a: float, b: float, c: float, d: float, e: float)
 ```
 
-### Functions in current version
+### Example
 ```gdscript
-linear_solve_real(a: float, b: float) -> Array[float]
-quadratic_solve_real(a: float, b: float, c: float) -> Array[float]
-cubic_solve_real(a: float, b: float, c: float, d: float) -> Array[float]
-quartic_solve_real(a: float, b: float, c: float, d: float, e: float) -> Array[float]
+RES.solve_cubic(2, -11, 12, 9) # Returns [-0.5, 3]
+RES.solve_quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
 ```
 
 ## Warning
-Arguments that are too large or small can lead to inaccurate answers.
+For large argument values, the answers may not be accurate or correct.

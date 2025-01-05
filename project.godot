@@ -10,14 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Test Equations"
-run/main_scene="res://test/test.tscn"
-config/features=PackedStringArray("4.3", "Forward Plus")
-
-[autoload]
-
-Equation="*res://addons/equation_real_solver/equation_real_solver.gd"
+config/name="Real Equation Solver"
+config/version="2.0.0"
+config/features=PackedStringArray("4.4", "Forward Plus")
+config/icon="uid://ds1j6n4unc32v"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/equation_real_solver/plugin.cfg")
+enabled=PackedStringArray("res://addons/res/plugin.cfg")
