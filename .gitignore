@@ -6,6 +6,7 @@
 .import/
 export.cfg
 export_presets.cfg
+*.uid
 
 # Dummy HTML5 export presets file for continuous integration
 !.github/dist/export_presets.cfg
