@@ -1,11 +1,7 @@
 # Real Equation Solver
 Equation solver for finding real roots of equations up to 4th degree for Godot.
 
-## Usage
-Functions take a value of type float and return a sorted array of real roots.
-If there are no roots, return an empty array.
-
-### Methods
+## Methods
 ```gdscript
 float cbrt(x: float)
 float solve_linear(a: float, b: float)
@@ -14,7 +10,7 @@ Array[float] solve_cubic(a: float, b: float, c: float, d: float)
 Array[float] solve_quartic(a: float, b: float, c: float, d: float, e: float)
 ```
 
-### Example
+## Example
 ```gdscript
 RES.solve_cubic(2, -11, 12, 9) # Returns [-0.5, 3]
 RES.solve_quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
