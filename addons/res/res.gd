@@ -2,7 +2,7 @@ class_name RES
 extends Object
 
 
-## Functions for finding real roots of polynomial equation of degree up to 4 (quartic).
+## Equation solver for finding real roots of equations up to 4th degree for Godot.
 ##
 ## @tutorial(Wikipedia: Linear equation): https://en.wikipedia.org/wiki/Linear_equation
 ## @tutorial(Wikipedia: Quadratic equation): https://en.wikipedia.org/wiki/Quadratic_equation
