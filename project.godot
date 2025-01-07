@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Real Equation Solver"
-config/version="2.0.0"
+config/version="2.0.1"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="uid://ds1j6n4unc32v"
 
