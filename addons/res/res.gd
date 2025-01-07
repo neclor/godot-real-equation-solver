@@ -39,9 +39,9 @@ static func solve_linear(a: float, b: float) -> float:
 ## [url=https://en.wikipedia.org/wiki/Quadratic_equation]See Quadratic equation.[/url] 
 static func solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if is_zero_approx(a):
-		var root: float = solve_linear(b, c)
-		if is_nan(root): return []
-		return [root]
+		var x: float = solve_linear(b, c)
+		if is_nan(x): return []
+		return [x]
 
 	var p: float = b / a
 	var q: float = c / a
@@ -53,10 +53,10 @@ static func solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if D > 0:
 		var neg_half_p: float = -p / 2
 		var half_sqrt_D: float = sqrt(D) / 2
-		var roots: Array[float] = [neg_half_p + half_sqrt_D, neg_half_p - half_sqrt_D]
+		var x_values: Array[float] = [neg_half_p + half_sqrt_D, neg_half_p - half_sqrt_D]
 
-		roots.sort()
-		return roots
+		x_values.sort()
+		return x_values
 
 	return []
 
@@ -83,35 +83,35 @@ static func solve_cubic(a: float, b: float, c: float, d: float) -> Array[float]:
 	var Q_pow_3: float = Q ** 3
 	var R_pow_2: float = R ** 2
 
-	var roots: Array[float] = []
+	var x_values: Array[float] = []
 	if is_equal_approx(Q_pow_3, R_pow_2):
 		if is_zero_approx(R):
-			roots.append(-p_div_3)
+			x_values.append(-p_div_3)
 		else:
 			var cbrt_R: float = cbrt(R)
-			roots.append(-2 * cbrt_R - p_div_3)
-			roots.append(cbrt_R - p_div_3)
+			x_values.append(-2 * cbrt_R - p_div_3)
+			x_values.append(cbrt_R - p_div_3)
 
 	elif Q_pow_3 > R_pow_2:
 		var f: float = acos(R / sqrt(Q_pow_3)) / 3
 		var neg_double_sqrt_Q: float = -2 * sqrt(Q)
 		var TAU_div_3: float = TAU / 3
-		roots.append(neg_double_sqrt_Q * cos(f) - p_div_3)
-		roots.append(neg_double_sqrt_Q * cos(f + TAU_div_3) - p_div_3)
-		roots.append(neg_double_sqrt_Q * cos(f - TAU_div_3) - p_div_3)
+		x_values.append(neg_double_sqrt_Q * cos(f) - p_div_3)
+		x_values.append(neg_double_sqrt_Q * cos(f + TAU_div_3) - p_div_3)
+		x_values.append(neg_double_sqrt_Q * cos(f - TAU_div_3) - p_div_3)
 
 	else:
 		if is_zero_approx(Q):
-			roots.append(-cbrt(r - p_div_3 ** 3) - p_div_3)
+			x_values.append(-cbrt(r - p_div_3 ** 3) - p_div_3)
 		elif Q > 0:
 			var f: float = acosh(absf(R) / sqrt(Q_pow_3)) / 3
-			roots.append(-2 * signf(R) * sqrt(Q) * cosh(f) - p_div_3)
+			x_values.append(-2 * signf(R) * sqrt(Q) * cosh(f) - p_div_3)
 		else:
 			var f: float = asinh(absf(R) / sqrt(absf(Q_pow_3))) / 3
-			roots.append(-2 * signf(R) * sqrt(absf(Q)) * sinh(f) - p_div_3)
+			x_values.append(-2 * signf(R) * sqrt(absf(Q)) * sinh(f) - p_div_3)
 
-	roots.sort()
-	return roots
+	x_values.sort()
+	return x_values
 
 
 ## Returns a sorted array of real roots of an equation of the form: [u][param a] * x^4 + [param b] * x^3 + [param c] * x^2 + [param d] * x + [param e] = 0[/u]
@@ -137,15 +137,15 @@ static func solve_quartic(a: float, b: float, c: float, d: float, e: float) -> A
 	var q: float = (half_a1 ** 3) - half_a1 * b1 + c1
 	var r: float = (-3.0 / 16.0) * (half_a1_squared ** 2) + half_a1_squared * b1 / 4 - half_a1 * c1 / 2 + d1
 
-	var roots: Array[float] = []
+	var u_values: Array[float] = []
 	if is_zero_approx(q):
 		for u_squared in solve_quadratic(1, p, r):
 			if is_zero_approx(u_squared):
-				roots.append(0)
+				u_values.append(0)
 			elif u_squared > 0:
 				var u: float = sqrt(u_squared)
-				roots.append(u)
-				roots.append(-u)
+				u_values.append(u)
+				u_values.append(-u)
 
 	else:
 		var cubic_b: float = 2.5 * p
@@ -157,16 +157,17 @@ static func solve_quartic(a: float, b: float, c: float, d: float, e: float) -> A
 		var sqrt_p_add_2y: float = sqrt(p_add_y + y)
 		var half_q_div_sqrt_p_add_2y: float = q / (2 * sqrt_p_add_2y)
 
-		var new_roots: Array[float] = solve_quadratic(1, -sqrt_p_add_2y, p_add_y + half_q_div_sqrt_p_add_2y) + solve_quadratic(1, sqrt_p_add_2y, p_add_y - half_q_div_sqrt_p_add_2y)
-		for new_root in new_roots:
-			var has_root: bool = false
-			for root in roots:
-				if is_equal_approx(new_root, root):
-					has_root = true
+		var new_u_values: Array[float] = solve_quadratic(1, -sqrt_p_add_2y, p_add_y + half_q_div_sqrt_p_add_2y) + solve_quadratic(1, sqrt_p_add_2y, p_add_y - half_q_div_sqrt_p_add_2y)
+		for new_u in new_u_values:
+			var has_u: bool = false
+			for u in u_values:
+				if is_equal_approx(new_u, u):
+					has_u = true
 					break
-			if not has_root: roots.append(new_root)
+			if not has_u: u_values.append(new_u)
 
-	roots.sort()
 	# Converting back from depressed quartic. x = u - a1 / 4
 	var a1_div_4: float = a1 / 4
-	return Array(roots.map(func(u: float) -> float: return u - a1_div_4), TYPE_FLOAT, "", null)
+	var x_values: Array[float] = Array(u_values.map(func(u: float) -> float: return u - a1_div_4), TYPE_FLOAT, "", null)
+	x_values.sort()
+	return x_values
