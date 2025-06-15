@@ -10,10 +10,11 @@ config_version=5
 
 [application]
 
-config/name="Real Equation Solver"
-config/version="2.0.1"
-config/features=PackedStringArray("4.4", "Forward Plus")
-config/icon="uid://ds1j6n4unc32v"
+config/name="RES - Real Equation Solver"
+config/version="2.1.0"
+config/tags=PackedStringArray("addon")
+config/features=PackedStringArray("4.5", "Forward Plus")
+config/icon="uid://wokao2w6ssuo"
 
 [editor_plugins]
 

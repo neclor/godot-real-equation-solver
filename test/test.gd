@@ -1,5 +1,4 @@
 @tool
-class_name RESTest
 extends EditorScript
 
 
@@ -10,52 +9,22 @@ const VALUE_AMPLITUDE: float = 1000
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
-func randf_value() -> float:
-	return rng.randf_range(-VALUE_AMPLITUDE, VALUE_AMPLITUDE)
-
-
-func randf_value_non_zero() -> float:
-	while true:
-		var value: float = randf_value()
-		if not is_zero_approx(value): return value
-	return 1
-
-
-func randf_unique_values(amount: int) -> Array[float]:
-	var unique_values: Array[float] = []
-	for i in amount:
-		while true:
-			var new_value: float = randf_value()
-			var new_value_is_unique: bool = true
-			for unique_value in unique_values:
-				if is_equal_approx(new_value, unique_value):
-					new_value_is_unique = false
-					break
-			if new_value_is_unique:
-				unique_values.append(new_value)
-				break
-	unique_values.sort()
-	return unique_values
-
-
-func is_equal_approx_arrays(a: Array[float], b: Array[float]) -> bool:
-	if a.size() != b.size(): return false
-	for i in a.size():
-		if not is_equal_approx(a[i], b[i]): return false
-	return true
-
-
 func _run():
-	rng.randomize()
 	print("RES Test")
+
+	rng.randomize()
 	prints("rng.seed =", rng.seed)
+
 	test_cbrt()
 	test_solve_linear()
 	test_solve_quadratic()
 	test_solve_cubic()
 	test_solve_quartic()
+
 	print("RES Test Completed")
 
+
+#region Test cbrt
 
 func test_cbrt() -> void:
 	verify_cbrt(0, 0)
@@ -71,6 +40,10 @@ func verify_cbrt(x: float, cube_root: float) -> bool:
 	printerr("TEST: RES.cbrt({0}) returns: {1}, expected: {2}".format([str(x), str(result), str(cube_root)]))
 	return false
 
+#endregion
+
+
+#region Test linear
 
 func test_solve_linear() -> void:
 	verify_solve_linear(0, 0, NAN)
@@ -87,6 +60,10 @@ func verify_solve_linear(a: float, b: float, root: float) -> bool:
 	printerr("TEST: RES.solve_linear({0}, {1}) returns: {2}, expected: {3}".format([str(a), str(b), str(result), str(root)]))
 	return false
 
+#endregion
+
+
+#region Test quadratic
 
 func test_solve_quadratic() -> void:
 	verify_solve_quadratic(0, 0, 0, [])
@@ -127,6 +104,10 @@ func verify_solve_quadratic(a: float, b: float, c: float, roots: Array[float]) -
 	printerr("TEST: RES.solve_quadratic({0}, {1}, {2}) returns: {3}, expected: {4}".format([str(a), str(b), str(c), str(result), str(roots)]))
 	return false
 
+#endregion
+
+
+#region Test cubic
 
 func test_solve_cubic() -> void:
 	verify_solve_cubic(0, 0, 0, 0, [])
@@ -171,6 +152,10 @@ func verify_solve_cubic(a: float, b: float, c: float, d: float, roots: Array[flo
 	printerr("TEST: RES.solve_cubic({0}, {1}, {2}, {3}) returns: {4}, expected: {5}".format([str(a), str(b), str(c), str(d), str(result), str(roots)]))
 	return false
 
+#endregion
+
+
+#region Test quadratic
 
 func test_solve_quartic() -> void:
 	verify_solve_quartic(0, 0, 0, 0, 0, [])
@@ -240,3 +225,44 @@ func verify_solve_quartic(a: float, b: float, c: float, d: float, e: float, root
 	if is_equal_approx_arrays(result, roots): return true
 	printerr("TEST: RES.solve_quartic({0}, {1}, {2}, {3}, {4}) returns: {5}, expected: {6}".format([str(a), str(b), str(c), str(d), str(e), str(result), str(roots)]))
 	return false
+
+#endregion
+
+
+#region Utils
+
+func randf_value() -> float:
+	return rng.randf_range(-VALUE_AMPLITUDE, VALUE_AMPLITUDE)
+
+
+func randf_value_non_zero() -> float:
+	while true:
+		var value: float = randf_value()
+		if not is_zero_approx(value): return value
+	return 1
+
+
+func randf_unique_values(amount: int) -> Array[float]:
+	var unique_values: Array[float] = []
+	for i in amount:
+		while true:
+			var new_value: float = randf_value()
+			var new_value_is_unique: bool = true
+			for unique_value in unique_values:
+				if is_equal_approx(new_value, unique_value):
+					new_value_is_unique = false
+					break
+			if new_value_is_unique:
+				unique_values.append(new_value)
+				break
+	unique_values.sort()
+	return unique_values
+
+
+func is_equal_approx_arrays(a: Array[float], b: Array[float]) -> bool:
+	if a.size() != b.size(): return false
+	for i in a.size():
+		if not is_equal_approx(a[i], b[i]): return false
+	return true
+
+#endregion
