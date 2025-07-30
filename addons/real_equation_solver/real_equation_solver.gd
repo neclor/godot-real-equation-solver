@@ -1,4 +1,4 @@
-class_name RES extends Object
+class_name Res extends Object
 
 
 ## Equation solver for finding real roots of equations up to 4th degree for Godot.
@@ -14,8 +14,8 @@ class_name RES extends Object
 ## Returns the cube root of [param x].
 ##
 ## [codeblock lang=gdscript]
-## RES.cbrt(64) # Returns 4
-## RES.cbrt(-27) # Returns -3
+## Res.cbrt(64) # Returns 4
+## Res.cbrt(-27) # Returns -3
 ## [/codeblock]
 static func cbrt(x: float) -> float:
 	return signf(x) * absf(x) ** (1.0 / 3.0)
@@ -25,8 +25,8 @@ static func cbrt(x: float) -> float:
 ## Returns a real root of an equation of the form: [param a] * x + [param b] = 0
 ##
 ## [codeblock lang=gdscript]
-## RES.solve_linear(5, -10) # Returns 2
-## RES.solve_linear(0, 1) # Returns NAN
+## Res.solve_linear(5, -10) # Returns 2
+## Res.solve_linear(0, 1) # Returns NAN
 ## [/codeblock]
 static func solve_linear(a: float, b: float) -> float:
 	if is_zero_approx(a): return NAN
@@ -36,7 +36,7 @@ static func solve_linear(a: float, b: float) -> float:
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^2 + [param b] * x + [param c] = 0
 ##
 ## [codeblock lang=gdscript]
-## RES.solve_quadratic(1, 1, -6) # Returns [-3, 2]
+## Res.solve_quadratic(1, 1, -6) # Returns [-3, 2]
 ## [/codeblock]
 static func solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 	if is_zero_approx(a):
@@ -65,7 +65,7 @@ static func solve_quadratic(a: float, b: float, c: float) -> Array[float]:
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^3 + [param b] * x^2 + [param c] * x + [param d] = 0
 ##
 ## [codeblock lang=gdscript]
-## RES.solve_cubic(2, -11, 12, 9) # Returns [-0.5, 3]
+## Res.solve_cubic(2, -11, 12, 9) # Returns [-0.5, 3]
 ## [/codeblock]
 ##
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect. [br]
@@ -120,7 +120,7 @@ static func solve_cubic(a: float, b: float, c: float, d: float) -> Array[float]:
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^4 + [param b] * x^3 + [param c] * x^2 + [param d] * x + [param e] = 0
 ##
 ## [codeblock lang=gdscript]
-## RES.solve_quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
+## Res.solve_quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
 ## [/codeblock]
 ##
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
@@ -136,7 +136,7 @@ static func solve_quartic(a: float, b: float, c: float, d: float, e: float) -> A
 	var half_a1_pow_2: float = half_a1 * half_a1
 	var half_a1_pow_3: float = half_a1_pow_2 * half_a1
 
-	# Converting to a depressed quartic. x = u - a1 / 4 -> u^4 + p * u^2 + q * u + r = 0
+	# Converting to a depRessed quartic. x = u - a1 / 4 -> u^4 + p * u^2 + q * u + r = 0
 	var p: float = (-3.0 / 2.0) * half_a1_pow_2 + b1
 	var q: float = half_a1_pow_3 - half_a1 * b1 + c1
 	var r: float = (-3.0 / 16.0) * (half_a1_pow_2 * half_a1_pow_2) + half_a1_pow_2 * b1 / 4 - half_a1 * c1 / 2 + d1
@@ -175,7 +175,7 @@ static func solve_quartic(a: float, b: float, c: float, d: float, e: float) -> A
 					break
 			if not has_u: u_values.append(new_u)
 
-	# Converting back from depressed quartic. x = u - a1 / 4
+	# Converting back from depRessed quartic. x = u - a1 / 4
 	var a1_div_4: float = a1 / 4
 	var x_values: Array[float] = Array(u_values.map(func(u: float) -> float: return u - a1_div_4), TYPE_FLOAT, "", null)
 	x_values.sort()
@@ -188,7 +188,7 @@ static func solve_quartic(a: float, b: float, c: float, d: float, e: float) -> A
 ## The function returns: [code][1, b][/code]
 ##
 ## [codeblock lang=gdscript]
-## RES.generate_linear(1) # Returns [1, -1]
+## Res.generate_linear(1) # Returns [1, -1]
 ## [/codeblock]
 static func generate_linear(r1: float) -> Array[float]:
 	return [1.0, -r1]
@@ -198,7 +198,7 @@ static func generate_linear(r1: float) -> Array[float]:
 ## The function returns: [code][1, b, c][/code]
 ##
 ## [codeblock lang=gdscript]
-## RES.generate_quadratic(1, 2) # Returns [1, -3, 2]
+## Res.generate_quadratic(1, 2) # Returns [1, -3, 2]
 ## [/codeblock]
 static func generate_quadratic(r1: float, r2: float) -> Array[float]:
 	var b: float = -(r1 + r2)
@@ -210,7 +210,7 @@ static func generate_quadratic(r1: float, r2: float) -> Array[float]:
 ## The function returns: [code][1, b, c, d][/code]
 ##
 ## [codeblock lang=gdscript]
-## RES.generate_cubic(1, 2, 3) # Returns [1, -6, 11, -6]
+## Res.generate_cubic(1, 2, 3) # Returns [1, -6, 11, -6]
 ## [/codeblock]
 static func generate_cubic(r1: float, r2: float, r3: float) -> Array[float]:
 	var b: float = -(r1 + r2 + r3)
@@ -223,7 +223,7 @@ static func generate_cubic(r1: float, r2: float, r3: float) -> Array[float]:
 ## The function returns: [code][1, b, c, d, e][/code]
 ##
 ## [codeblock lang=gdscript]
-## RES.generate_quartic(1, 2, 3, 4) # Returns [1, -10, 35, -50, 24]
+## Res.generate_quartic(1, 2, 3, 4) # Returns [1, -10, 35, -50, 24]
 ## [/codeblock]
 static func generate_quartic(r1: float, r2: float, r3: float, r4: float) -> Array[float]:
 	var b: float = -(r1 + r2 + r3 + r4)
