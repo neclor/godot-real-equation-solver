@@ -3,35 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 
 
+
 namespace RealEquationSolver;
 
 
 /// <summary>
 /// Equation solver for finding real roots of equations up to 4th degree.
 /// </summary>
-public static class Res {
+public static class RealEquationSolver {
 
 
-	const double EPSILON = 1e-5;
+	const double Epsilon = 1e-5;
 
-
-	static bool IsZeroApprox(double x) {
-		return Math.Abs(x) < EPSILON;
-	}
-
-    #region Solve
+	#region Solve
 	/// <summary>
-	/// Returns a real root of an equation of the form: a * x + b = 0
+	/// Solves equation of the form: a * x + b = 0
 	/// </summary>
 	/// <param name="a">Coefficient of x.</param>
 	/// <param name="b">Constant term.</param>
 	/// <returns>Real root of the equation, or NaN if no solution.</returns>
 	public static double SolveLinear(double a, double b) {
 		if (IsZeroApprox(a)) return double.NaN;
-
-		List<float> roots = [];
-
-
 		return -b / a;
 	}
 
@@ -40,7 +32,7 @@ public static class Res {
 	}
 
 	/// <summary>
-	/// Returns a sorted array of real roots of an equation of the form: a * x^2 + b * x + c = 0
+	/// Solves equation of the form: a * x^2 + b * x + c = 0
 	/// </summary>
 	/// <param name="a">Coefficient of x^2.</param>
 	/// <param name="b">Coefficient of x.</param>
@@ -49,25 +41,31 @@ public static class Res {
 	public static double[] SolveQuadratic(double a, double b, double c) {
 		if (IsZeroApprox(a)) {
 			double x = SolveLinear(b, c);
-			if (IsNan(x)) return Array.Empty<double>();
-			return new[] { x };
+			if (double.IsNaN(x)) return [];
+			return [x];
 		}
+
 		double p = b / a;
 		double q = c / a;
 		double D = p * p - 4 * q;
-		if (IsZeroApprox(D)) return new[] { -p / 2 };
-		if (D > 0) {
-			double neg_half_p = -p / 2;
-			double half_sqrt_D = Math.Sqrt(D) / 2;
-			var x_values = new[] { neg_half_p + half_sqrt_D, neg_half_p - half_sqrt_D };
-			Array.Sort(x_values);
-			return x_values;
-		}
-		return Array.Empty<double>();
+
+		if (D < 0) return [];
+
+		if (IsZeroApprox(D)) return [-p / 2];
+
+		double negHalfP = -p / 2;
+		double halfSqrtD = Math.Sqrt(D) / 2;
+		double[] xValues = [negHalfP + halfSqrtD, negHalfP - halfSqrtD];
+		Array.Sort(xValues);
+		return xValues;
+	}
+
+	public static float[] SolveQuadratic(float a, float b, float c) {
+		return SolveQuadratic((double)a, (double)b, (double)c).Select(x => (float)x).ToArray();
 	}
 
 	/// <summary>
-	/// Returns a sorted array of real roots of an equation of the form: a * x^3 + b * x^2 + c * x + d = 0
+	/// Solves equation of the form: a * x^3 + b * x^2 + c * x + d = 0
 	/// </summary>
 	/// <param name="a">Coefficient of x^3.</param>
 	/// <param name="b">Coefficient of x^2.</param>
@@ -77,49 +75,55 @@ public static class Res {
 	/// <remarks>For large argument values, answers may be inaccurate or incorrect.</remarks>
 	public static double[] SolveCubic(double a, double b, double c, double d) {
 		if (IsZeroApprox(a)) return SolveQuadratic(b, c, d);
+
 		double p = b / a;
 		double q = c / a;
 		double r = d / a;
-		double p_div_3 = p / 3;
-		double p_div_3_pow_2 = p_div_3 * p_div_3;
-		double p_div_3_pow_3 = p_div_3_pow_2 * p_div_3;
-		double Q = p_div_3_pow_2 - q / 3;
-		double R = p_div_3_pow_3 + (r - p_div_3 * q) / 2;
-		double Q_pow_3 = Q * Q * Q;
-		double R_pow_2 = R * R;
-		var x_values = new List<double>();
-		if (IsZeroApprox(Q_pow_3 - R_pow_2)) {
+
+		double pDiv3 = p / 3;
+		double pDiv3Pow2 = pDiv3 * pDiv3;
+		double pDiv3Pow3 = pDiv3Pow2 * pDiv3;
+
+		double Q = pDiv3Pow2 - q / 3;
+		double R = pDiv3Pow3 + (r - pDiv3 * q) / 2;
+
+		double QPow3 = Q * Q * Q;
+		double RPow2 = R * R;
+
+		List<double> xValues = [];
+
+		if (IsEqualApprox(QPow3, RPow2)) {
 			if (IsZeroApprox(R)) {
-				x_values.Add(-p_div_3);
+				xValues.Add(-pDiv3);
 			}
 			else {
-				double cbrt_R = Math.Cbrt(R);
-				x_values.Add(-2 * cbrt_R - p_div_3);
-				x_values.Add(cbrt_R - p_div_3);
+				double cbrtR = Math.Cbrt(R);
+				xValues.Add(-2 * cbrtR - pDiv3);
+				xValues.Add(cbrtR - pDiv3);
 			}
 		}
-		else if (Q_pow_3 > R_pow_2) {
-			double f = Math.Acos(R / Math.Sqrt(Q_pow_3)) / 3;
+		else if (QPow3 > RPow2) {
+			double f = Math.Acos(R / Math.Sqrt(QPow3)) / 3;
 			double neg_double_sqrt_Q = -2 * Math.Sqrt(Q);
 			double TAU_div_3 = Math.Tau / 3;
-			x_values.Add(neg_double_sqrt_Q * Math.Cos(f) - p_div_3);
-			x_values.Add(neg_double_sqrt_Q * Math.Cos(f + TAU_div_3) - p_div_3);
-			x_values.Add(neg_double_sqrt_Q * Math.Cos(f - TAU_div_3) - p_div_3);
+			xValues.Add(neg_double_sqrt_Q * Math.Cos(f) - pDiv3);
+			xValues.Add(neg_double_sqrt_Q * Math.Cos(f + TAU_div_3) - pDiv3);
+			xValues.Add(neg_double_sqrt_Q * Math.Cos(f - TAU_div_3) - pDiv3);
 		}
 		else {
 			if (IsZeroApprox(Q)) {
-				x_values.Add(-Math.Cbrt(r - p_div_3_pow_3) - p_div_3);
+				xValues.Add(-Math.Cbrt(r - pDiv3Pow3) - pDiv3);
 			}
 			else if (Q > 0) {
-				double f = Math.Acosh(Math.Abs(R) / Math.Sqrt(Q_pow_3)) / 3;
-				x_values.Add(-2 * Math.Sign(R) * Math.Sqrt(Q) * Cosh(f) - p_div_3);
+				double f = Math.Acosh(Math.Abs(R) / Math.Sqrt(QPow3)) / 3;
+				xValues.Add(-2 * Math.Sign(R) * Math.Sqrt(Q) * Math.Cosh(f) - pDiv3);
 			}
 			else {
-				double f = Math.Asinh(Math.Abs(R) / Math.Sqrt(Math.Abs(Q_pow_3))) / 3;
-				x_values.Add(-2 * Math.Sign(R) * Math.Sqrt(Math.Abs(Q)) * Math.Sinh(f) - p_div_3);
+				double f = Math.Asinh(Math.Abs(R) / Math.Sqrt(Math.Abs(QPow3))) / 3;
+				xValues.Add(-2 * Math.Sign(R) * Math.Sqrt(Math.Abs(Q)) * Math.Sinh(f) - pDiv3);
 			}
 		}
-		var result = x_values.Where(x => !IsNan(x) && !double.IsInfinity(x)).ToArray();
+		var result = xValues.Where(x => !IsNan(x) && !double.IsInfinity(x)).ToArray();
 		Array.Sort(result);
 		return result;
 	}
@@ -238,4 +242,13 @@ public static class Res {
 		return new[] { 1.0, b, c, d, e };
 	}
 	#endregion
+
+
+	static bool IsEqualApprox(double x, double y) {
+		return IsZeroApprox(x - y);
+	}
+
+	static bool IsZeroApprox(double x) {
+		return Math.Abs(x) < Epsilon;
+	}
 }
