@@ -11,11 +11,15 @@ config_version=5
 [application]
 
 config/name="RES - Real Equation Solver"
-config/version="3.0.0"
+config/version="3.1.1"
 config/tags=PackedStringArray("addon")
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://wokao2w6ssuo"
 
+[dotnet]
+
+project/assembly_name="RES - Real Equation Solver"
+
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/res/plugin.cfg")
+enabled=PackedStringArray("res://addons/real_equation_solver/plugin.cfg")
