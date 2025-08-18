@@ -7,6 +7,8 @@ Equation solver and generator for real-valued polynomial equations up to degree 
 Res
 
 
+# Cbrt
+
 float cbrt(x: float) static
 
 
