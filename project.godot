@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="RES - Real Equation Solver"
-config/version="3.1.2"
+config/version="4.0.0"
 config/tags=PackedStringArray("addon")
 config/features=PackedStringArray("4.5", "Forward Plus")
 config/icon="uid://wokao2w6ssuo"
