@@ -25,4 +25,4 @@ static func _error(message: String = "") -> void:
 
 
 func _init() -> void:
-	_error("Class is static and should not be instantiated.")
+	_error("`RealEquationSolver`: Class is static and should not be instantiated.")

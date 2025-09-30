@@ -1,5 +1,5 @@
 @tool
-extends EditorScript
+class_name RealEquationSolverTest extends EditorScript
 
 
 const TEST_COUNT: int = 1000
@@ -9,8 +9,8 @@ const VALUE_AMPLITUDE: float = 100
 var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
-func _run():
-	print("Res Test")
+func _run() -> void:
+	print("Real Equation Solver Test")
 
 	rng.randomize()
 	prints("rng.seed =", rng.seed)
@@ -35,9 +35,9 @@ func test_cbrt() -> void:
 
 
 func verify_cbrt(x: float, cbrt_x: float) -> void:
-	var Result: float = RealEquationSolverMath.cbrt(x)
-	if not is_equal_approx(Result, cbrt_x):
-		printerr("TEST: cbrt: arg: {0}, returns: {1}, expected: {2}".format([str(x), str(Result), str(cbrt_x)]))
+	var result: float = RealEquationSolverMath.cbrt(x)
+	if not is_equal_approx(result, cbrt_x):
+		printerr("TEST: cbrt: arg: {0}, returns: {1}, expected: {2}".format([str(x), str(result), str(cbrt_x)]))
 #endregion
 
 
@@ -54,9 +54,9 @@ func test_linear() -> void:
 
 
 func verify_linear(args: Array[float], expected: float) -> void:
-	var Result: float = Res.linear(args[0], args[1])
-	if not (is_equal_approx(Result, expected) or (is_nan(Result) and is_nan(expected))):
-		printerr("TEST: linear: args: {0}, Result: {1}, expected: {2}".format([str(args), str(Result), str(expected)]))
+	var result: float = Res.linear(args[0], args[1])
+	if not (is_equal_approx(result, expected) or (is_nan(result) and is_nan(expected))):
+		printerr("TEST: linear: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
 
 
@@ -92,9 +92,9 @@ func test_quadratic_two_roots() -> void:
 
 
 func verify_quadratic(args: Array[float], expected: Array[float]) -> void:
-	var Result: Array[float] = Res.quadratic(args[0], args[1], args[2])
-	if not is_equal_approx_array(Result, expected):
-		printerr("TEST: quadratic: args: {0}, Result: {1}, expected: {2}".format([str(args), str(Result), str(expected)]))
+	var result: Array[float] = Res.quadratic(args[0], args[1], args[2])
+	if not is_equal_approx_array(result, expected):
+		printerr("TEST: quadratic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
 
 
@@ -131,9 +131,9 @@ func test_cubic_three_roots() -> void:
 
 
 func verify_cubic(args: Array[float], expected: Array[float]) -> void:
-	var Result: Array[float] = Res.cubic(args[0], args[1], args[2], args[3])
-	if not is_equal_approx_array(Result, expected): 
-		printerr("TEST: cubic: args: {0}, Result: {1}, expected: {2}".format([str(args), str(Result), str(expected)]))
+	var result: Array[float] = Res.cubic(args[0], args[1], args[2], args[3])
+	if not is_equal_approx_array(result, expected): 
+		printerr("TEST: cubic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
 
 
@@ -185,9 +185,9 @@ func test_quartic_four_roots() -> void:
 
 
 func verify_quartic(args: Array[float], expected: Array[float]) -> void:
-	var Result: Array[float] = Res.quartic(args[0], args[1], args[2], args[3], args[4])
-	if not is_equal_approx_array(Result, expected):
-		printerr("TEST: quartic: args: {0}, Result: {1}, expected: {2}".format([str(args), str(Result), str(expected)]))
+	var result: Array[float] = Res.quartic(args[0], args[1], args[2], args[3], args[4])
+	if not is_equal_approx_array(result, expected):
+		printerr("TEST: quartic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
 
 
