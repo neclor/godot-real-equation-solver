@@ -1,10 +1,9 @@
-class_name Reg extends RealEquationSolver
+@abstract class_name ResGenerator extends RealEquationSolver
 
 
-## Reg - Real Equation Generator [br]
 ## Equation generator for real-valued polynomial equations up to 4th degree.
 ##
-## @tutorial(RES - Real Equation Solver): https://github.com/neclor/godot-real-equation-solver/blob/main/README.md
+## @tutorial(Real Equation Solver): https://github.com/neclor/godot-real-equation-solver/blob/main/README.md
 ##
 ## @tutorial(Wikipedia: Linear equation): https://en.wikipedia.org/wiki/Linear_equation
 ## @tutorial(Wikipedia: Quadratic equation): https://en.wikipedia.org/wiki/Quadratic_equation
@@ -16,7 +15,7 @@ class_name Reg extends RealEquationSolver
 ## The function returns: [code][1, b][/code]
 ##
 ## [codeblock lang=gdscript]
-## Reg.linear(1) # Returns [1, -1]
+## ResGenerator.linear(1) # Returns [1, -1]
 ## [/codeblock]
 static func linear(r1: float) -> Array[float]:
 	return [1.0, -r1]
@@ -26,9 +25,11 @@ static func linear(r1: float) -> Array[float]:
 ## The function returns: [code][1, b, c][/code]
 ##
 ## [codeblock lang=gdscript]
-## Reg.quadratic(1, 2) # Returns [1, -3, 2]
+## ResGenerator.quadratic(1, 2) # Returns [1, -3, 2]
 ## [/codeblock]
-static func quadratic(r1: float, r2: float) -> Array[float]:
+static func quadratic(...roots: Array) -> Array[float]:
+	if !_ResLogger._check_number_array("ResSolver", "solve", roots): return []
+	
 	var b: float = -(r1 + r2)
 	var c: float = r1 * r2
 	return [1.0, b, c]
@@ -38,7 +39,7 @@ static func quadratic(r1: float, r2: float) -> Array[float]:
 ## The function returns: [code][1, b, c, d][/code]
 ##
 ## [codeblock lang=gdscript]
-## Reg.cubic(1, 2, 3) # Returns [1, -6, 11, -6]
+## ResGenerator.cubic(1, 2, 3) # Returns [1, -6, 11, -6]
 ## [/codeblock]
 static func cubic(r1: float, r2: float, r3: float) -> Array[float]:
 	var b: float = -(r1 + r2 + r3)
@@ -51,7 +52,7 @@ static func cubic(r1: float, r2: float, r3: float) -> Array[float]:
 ## The function returns: [code][1, b, c, d, e][/code]
 ##
 ## [codeblock lang=gdscript]
-## Reg.quartic(1, 2, 3, 4) # Returns [1, -10, 35, -50, 24]
+## ResGenerator.quartic(1, 2, 3, 4) # Returns [1, -10, 35, -50, 24]
 ## [/codeblock]
 static func quartic(r1: float, r2: float, r3: float, r4: float) -> Array[float]:
 	var b: float = -(r1 + r2 + r3 + r4)
@@ -59,7 +60,3 @@ static func quartic(r1: float, r2: float, r3: float, r4: float) -> Array[float]:
 	var d: float = -(r1 * r2 * r3 + r1 * r2 * r4 + r1 * r3 * r4 + r2 * r3 * r4)
 	var e: float = r1 * r2 * r3 * r4
 	return [1.0, b, c, d, e]
-
-
-func _init() -> void:
-	_error("`Reg`: Class is static and should not be instantiated.")

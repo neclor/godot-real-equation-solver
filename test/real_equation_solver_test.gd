@@ -26,7 +26,7 @@ func _run() -> void:
 
 #region Test Cbrt
 func test_cbrt() -> void:
-	assert(RealEquationSolverMath.cbrt(27) == 3)
+	assert(ResMath.cbrt(27) == 3)
 	verify_cbrt(0, 0)
 
 	for i in TEST_COUNT:
@@ -35,7 +35,7 @@ func test_cbrt() -> void:
 
 
 func verify_cbrt(x: float, cbrt_x: float) -> void:
-	var result: float = RealEquationSolverMath.cbrt(x)
+	var result: float = ResMath.cbrt(x)
 	if not is_equal_approx(result, cbrt_x):
 		printerr("TEST: cbrt: arg: {0}, returns: {1}, expected: {2}".format([str(x), str(result), str(cbrt_x)]))
 #endregion
@@ -43,18 +43,18 @@ func verify_cbrt(x: float, cbrt_x: float) -> void:
 
 #region Test Linear
 func test_linear() -> void:
-	assert(is_equal_approx_array(Reg.linear(1), [1, -1]))
+	assert(is_equal_approx_array(ResGenerator.linear(1), [1, -1]))
 	verify_linear([1, -1], 1)
 	verify_linear([0 ,0], NAN)
 
 	for i in TEST_COUNT:
 		var r: float = randf_value()
-		var args: Array[float] = mul_array(Reg.linear(r), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.linear(r), randf_value_non_zero())
 		verify_linear(args, r)
 
 
 func verify_linear(args: Array[float], expected: float) -> void:
-	var result: float = Res.linear(args[0], args[1])
+	var result: float = ResSolver.linear(args[0], args[1])
 	if not (is_equal_approx(result, expected) or (is_nan(result) and is_nan(expected))):
 		printerr("TEST: linear: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
@@ -62,7 +62,7 @@ func verify_linear(args: Array[float], expected: float) -> void:
 
 #region Test Quadratic
 func test_quadratic() -> void:
-	assert(is_equal_approx_array(Reg.quadratic(1, 2), [1, -3, 2]))
+	assert(is_equal_approx_array(ResGenerator.quadratic(1, 2), [1, -3, 2]))
 	verify_quadratic([1, -3, 2], [1, 2])
 	verify_quadratic([0, 0, 0], [])
 
@@ -80,19 +80,19 @@ func test_quadratic_zero_roots() -> void:
 func test_quadratic_one_root() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(1)
-		var args: Array[float] = mul_array(Reg.quadratic(r[0], r[0]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quadratic(r[0], r[0]), randf_value_non_zero())
 		verify_quadratic(args, r)
 
 
 func test_quadratic_two_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(2)
-		var args: Array[float] = mul_array(Reg.quadratic(r[0], r[1]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quadratic(r[0], r[1]), randf_value_non_zero())
 		verify_quadratic(args, r)
 
 
 func verify_quadratic(args: Array[float], expected: Array[float]) -> void:
-	var result: Array[float] = Res.quadratic(args[0], args[1], args[2])
+	var result: Array[float] = ResSolver.quadratic(args[0], args[1], args[2])
 	if not is_equal_approx_array(result, expected):
 		printerr("TEST: quadratic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
@@ -100,7 +100,7 @@ func verify_quadratic(args: Array[float], expected: Array[float]) -> void:
 
 #region Test Cubic
 func test_cubic() -> void:
-	assert(is_equal_approx_array(Reg.cubic(1, 2, 3), [1, -6, 11, -6]))
+	assert(is_equal_approx_array(ResGenerator.cubic(1, 2, 3), [1, -6, 11, -6]))
 	verify_cubic([1, -6, 11, -6], [1, 2, 3])
 	verify_cubic([0, 0, 0, 0], [])
 
@@ -112,26 +112,26 @@ func test_cubic() -> void:
 func test_cubic_one_root() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(1)
-		var args: Array[float] = mul_array(Reg.cubic(r[0], r[0], r[0]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.cubic(r[0], r[0], r[0]), randf_value_non_zero())
 		verify_cubic(args, r)
 
 
 func test_cubic_two_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(2)
-		var args: Array[float] = mul_array(Reg.cubic(r[0], r[0], r[1]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.cubic(r[0], r[0], r[1]), randf_value_non_zero())
 		verify_cubic(args, r)
 
 
 func test_cubic_three_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(3)
-		var args: Array[float] = mul_array(Reg.cubic(r[0], r[1], r[2]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.cubic(r[0], r[1], r[2]), randf_value_non_zero())
 		verify_cubic(args, r)
 
 
 func verify_cubic(args: Array[float], expected: Array[float]) -> void:
-	var result: Array[float] = Res.cubic(args[0], args[1], args[2], args[3])
+	var result: Array[float] = ResSolver.cubic(args[0], args[1], args[2], args[3])
 	if not is_equal_approx_array(result, expected): 
 		printerr("TEST: cubic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
@@ -139,7 +139,7 @@ func verify_cubic(args: Array[float], expected: Array[float]) -> void:
 
 #region Test Quartic
 func test_quartic() -> void:
-	assert(is_equal_approx_array(Reg.quartic(1, 2, 3, 4), [1, -10, 35, -50, 24]))
+	assert(is_equal_approx_array(ResGenerator.quartic(1, 2, 3, 4), [1, -10, 35, -50, 24]))
 	verify_quartic([1, -10, 35, -50, 24], [1, 2, 3, 4])
 	verify_quartic([0, 0, 0, 0, 0], [])
 
@@ -159,33 +159,33 @@ func test_quartic_zero_roots() -> void:
 func test_quartic_one_root() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(1)
-		var args: Array[float] = mul_array(Reg.quartic(r[0], r[0], r[0], r[0]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quartic(r[0], r[0], r[0], r[0]), randf_value_non_zero())
 		verify_quartic(args, r)
 
 
 func test_quartic_two_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(2)
-		var args: Array[float] = mul_array(Reg.quartic(r[0], r[0], r[1], r[1]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quartic(r[0], r[0], r[1], r[1]), randf_value_non_zero())
 		verify_quartic(args, r)
 
 
 func test_quartic_three_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(3)
-		var args: Array[float] = mul_array(Reg.quartic(r[0], r[0], r[1], r[2]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quartic(r[0], r[0], r[1], r[2]), randf_value_non_zero())
 		verify_quartic(args, r)
 
 
 func test_quartic_four_roots() -> void:
 	for i in TEST_COUNT:
 		var r: Array[float] = randf_unique_values(4)
-		var args: Array[float] = mul_array(Reg.quartic(r[0], r[1], r[2], r[3]), randf_value_non_zero())
+		var args: Array[float] = mul_array(ResGenerator.quartic(r[0], r[1], r[2], r[3]), randf_value_non_zero())
 		verify_quartic(args, r)
 
 
 func verify_quartic(args: Array[float], expected: Array[float]) -> void:
-	var result: Array[float] = Res.quartic(args[0], args[1], args[2], args[3], args[4])
+	var result: Array[float] = ResSolver.quartic(args[0], args[1], args[2], args[3], args[4])
 	if not is_equal_approx_array(result, expected):
 		printerr("TEST: quartic: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
