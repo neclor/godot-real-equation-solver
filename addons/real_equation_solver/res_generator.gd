@@ -1,6 +1,9 @@
 @abstract class_name ResGenerator extends RealEquationSolver
 
 
+const _CLASS_NAME: String = "ResGenerator"
+
+
 ## Equation generator for real-valued polynomial equations up to 4th degree.
 ##
 ## @tutorial(Real Equation Solver): https://github.com/neclor/godot-real-equation-solver/blob/main/README.md
@@ -28,10 +31,13 @@ static func linear(r1: float) -> Array[float]:
 ## ResGenerator.quadratic(1, 2) # Returns [1, -3, 2]
 ## [/codeblock]
 static func quadratic(...roots: Array) -> Array[float]:
-	if !_ResLogger._check_number_array("ResSolver", "solve", roots): return []
-	
-	var b: float = -(r1 + r2)
-	var c: float = r1 * r2
+	var r: Array[float] = []
+	if !_ResUtils.try_to_float_array(roots, r):
+		_ResLogger.format_error(_CLASSNAME, "solve", "One of the arguments is not a number", true, [])
+		return []
+
+	var b: float = -(r[0] + r[1])
+	var c: float = r[0] * r[1]
 	return [1.0, b, c]
 
 

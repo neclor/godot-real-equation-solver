@@ -183,13 +183,16 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 ##
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
 static func solve(...coeffs: Array) -> Array[float]:
-	if !_ResLogger._check_number_array("ResSolver", "solve", coeffs): return []
-
-	if coeffs.size() > 5:
-		_ResLogger._push_error("`ResSolver.solve`: There cannot be more than 5 arguments. Returned [].")
+	var coeffs_float: Array[float] = []
+	if !_ResUtils.try_to_float_array(coeffs, coeffs_float):
+		_ResLogger.format_error("ResSolver", "solve", "One of the arguments is not a number", true, [])
 		return []
 
-	return solve_array(Array(coeffs, TYPE_FLOAT, "", null))
+	if coeffs_float.size() > 5:
+		_ResLogger.format_error("ResSolver", "solve", "There cannot be more than 5 arguments", true, [])
+		return []
+
+	return solve_array(coeffs_float)
 
 
 ## Returns a sorted array of real roots from a [float] [Array] of coefficients.
@@ -201,7 +204,7 @@ static func solve(...coeffs: Array) -> Array[float]:
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
 static func solve_array(coeffs: Array[float]) -> Array[float]:
 	if coeffs.size() > 5:
-		_ResLogger._push_error("`ResSolver.solve_array`: There cannot be more than 5 arguments. Returned [].")
+		_ResLogger.error("`ResSolver.solve_array`: There cannot be more than 5 arguments. Returned [].")
 		return []
 
 	match coeffs.size():

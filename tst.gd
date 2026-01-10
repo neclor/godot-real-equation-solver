@@ -10,8 +10,8 @@ extends EditorScript
 
 
 func _run() -> void:
-	ResSolver.solve()
-	print(ResSolver.solve(1, 1, -6))
+	print(null)
+	print(ResSolver.solve(1, 2, 3))
 
 
 

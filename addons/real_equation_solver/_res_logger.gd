@@ -7,18 +7,27 @@
 static var _message_prefix: String = "[RealEquationSolver] - "
 
 
-static func _push_warning(message: String = "") -> void:
-	push_warning(_message_prefix + message)
-
-
-static func _push_error(message: String = "") -> void:
+## Push error.
+static func error(message: String = "") -> void:
 	assert(false, _message_prefix + message)
 	push_error(_message_prefix + message)
 
 
-static func _check_number_array(module_name: String, method_name: String, array: Array) -> bool:
-	for i in array:
-		if i is int or i is float: continue
-		_ResLogger._push_error("`" + module_name + "." + method_name + "`: Argument is not number: `" + i + "`. Returned [].")
-		return false
-	return true
+## Format and push error.
+static func format_error(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> void:
+	error(format_message(module, method, message, returned, return_value))
+
+
+## Format message.
+static func format_message(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> String:
+	return "`%s.%s`: %s." % [module, method, message] + (" Returned " + return_value + ".") if returned else ""
+
+
+## Format and push warning.
+static func format_warning(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> void:
+	warning(format_message(module, method, message, returned, return_value))
+
+
+## Push warning.
+static func warning(message: String = "") -> void:
+	push_warning(_message_prefix + message)
