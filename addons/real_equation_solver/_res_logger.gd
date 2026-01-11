@@ -4,30 +4,30 @@
 ## Logger
 
 
-static var _message_prefix: String = "[RealEquationSolver] - "
+const _SCRIPT: GDScript = RealEquationSolver
 
 
 ## Push error.
 static func error(message: String = "") -> void:
-	assert(false, _message_prefix + message)
-	push_error(_message_prefix + message)
+	push_error(message)
+	assert(false, message)
 
 
 ## Format and push error.
-static func format_error(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> void:
-	error(format_message(module, method, message, returned, return_value))
+static func format_error(script: GDScript, method: Callable, message: String = "", returned: Variant = "") -> void:
+	error(format_message(script, method, message, returned))
 
 
 ## Format message.
-static func format_message(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> String:
-	return "`%s.%s`: %s." % [module, method, message] + (" Returned " + return_value + ".") if returned else ""
+static func format_message(script: GDScript, method: Callable, message: String = "", returned: Variant = "") -> String:
+	var text: String = "[%s] - `%s.%s`" % [_SCRIPT.get_global_name(), script.get_global_name(), method.get_method()]
+	if not message.is_empty():
+		text += ": %s." % message
+	if not ((returned is String or returned is StringName) and returned.is_empty()):
+		text += " Returned " + str(returned) + "."
+	return text
 
 
 ## Format and push warning.
-static func format_warning(module: String, method: String, message: String, returned: bool = false, return_value: Variant = "") -> void:
-	warning(format_message(module, method, message, returned, return_value))
-
-
-## Push warning.
-static func warning(message: String = "") -> void:
-	push_warning(_message_prefix + message)
+static func format_warning(script: GDScript, method: Callable, message: String = "", returned: Variant = "") -> void:
+	push_warning(format_message(script, method, message, returned))

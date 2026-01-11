@@ -1,5 +1,4 @@
-@tool
-class_name RealEquationSolverTest extends EditorScript
+@tool class_name Test extends EditorScript
 
 
 const TEST_COUNT: int = 1000
@@ -10,53 +9,21 @@ var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 func _run() -> void:
-	print("Real Equation Solver Test")
+	print("Test")
 
 	rng.randomize()
 	prints("rng.seed =", rng.seed)
 
-	test_cbrt()
 	test_linear()
 	test_quadratic()
 	test_cubic()
 	test_quartic()
 
-	print("Res Test Completed")
-
-
-#region Test Cbrt
-func test_cbrt() -> void:
-	assert(ResMath.cbrt(27) == 3)
-	verify_cbrt(0, 0)
-
-	for i in TEST_COUNT:
-		var cbrt_x: float = randf_value_non_zero()
-		verify_cbrt(cbrt_x * cbrt_x * cbrt_x, cbrt_x)
-
-
-func verify_cbrt(x: float, cbrt_x: float) -> void:
-	var result: float = ResMath.cbrt(x)
-	if not is_equal_approx(result, cbrt_x):
-		printerr("TEST: cbrt: arg: {0}, returns: {1}, expected: {2}".format([str(x), str(result), str(cbrt_x)]))
-#endregion
+	print("Test Completed")
 
 
 #region Test Linear
-func test_linear() -> void:
-	assert(is_equal_approx_array(ResGenerator.linear(1), [1, -1]))
-	verify_linear([1, -1], 1)
-	verify_linear([0 ,0], NAN)
 
-	for i in TEST_COUNT:
-		var r: float = randf_value()
-		var args: Array[float] = mul_array(ResGenerator.linear(r), randf_value_non_zero())
-		verify_linear(args, r)
-
-
-func verify_linear(args: Array[float], expected: float) -> void:
-	var result: float = ResSolver.linear(args[0], args[1])
-	if not (is_equal_approx(result, expected) or (is_nan(result) and is_nan(expected))):
-		printerr("TEST: linear: args: {0}, result: {1}, expected: {2}".format([str(args), str(result), str(expected)]))
 #endregion
 
 

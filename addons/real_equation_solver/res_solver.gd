@@ -13,7 +13,7 @@
 ## @tutorial(Wikipedia: Ferrari's solution): https://ru.wikipedia.org/wiki/%D0%9C%D0%B5%D1%82%D0%BE%D0%B4_%D0%A4%D0%B5%D1%80%D1%80%D0%B0%D1%80%D0%B8
 
 
-
+const _SCRIPT: GDScript = ResSolver
 
 
 ## Returns a real root of an equation of the form: [param a] * x + [param b] = 0
@@ -25,7 +25,6 @@
 static func linear(a: float, b: float) -> float:
 	if is_zero_approx(a): return NAN
 	return -b / a
-
 
 
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^2 + [param b] * x + [param c] = 0
@@ -183,16 +182,15 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 ##
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
 static func solve(...coeffs: Array) -> Array[float]:
-	var coeffs_float: Array[float] = []
-	if !_ResUtils.try_to_float_array(coeffs, coeffs_float):
-		_ResLogger.format_error("ResSolver", "solve", "One of the arguments is not a number", true, [])
+	if not ResMath.is_numeric_array(coeffs):
+		_ResLogger.format_error(_SCRIPT, solve, "One of the arguments is not a number", [])
 		return []
 
-	if coeffs_float.size() > 5:
-		_ResLogger.format_error("ResSolver", "solve", "There cannot be more than 5 arguments", true, [])
+	if coeffs.size() > 5:
+		_ResLogger.format_error(_SCRIPT, solve, "There cannot be more than 5 arguments", [])
 		return []
 
-	return solve_array(coeffs_float)
+	return solve_array(Array(coeffs, Variant.Type.TYPE_FLOAT, "", null))
 
 
 ## Returns a sorted array of real roots from a [float] [Array] of coefficients.
@@ -204,7 +202,7 @@ static func solve(...coeffs: Array) -> Array[float]:
 ## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
 static func solve_array(coeffs: Array[float]) -> Array[float]:
 	if coeffs.size() > 5:
-		_ResLogger.error("`ResSolver.solve_array`: There cannot be more than 5 arguments. Returned [].")
+		_ResLogger.format_error(_SCRIPT, solve_array, "There cannot be more than 5 arguments", [])
 		return []
 
 	match coeffs.size():

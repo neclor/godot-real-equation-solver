@@ -1,5 +1,5 @@
 @tool
-extends EditorScript
+class_name TTTTS extends EditorScript
 
 
 
@@ -10,10 +10,20 @@ extends EditorScript
 
 
 func _run() -> void:
-	print(null)
-	print(ResSolver.solve(1, 2, 3))
+
+	_ResLogger.format_error(TTTTS, _run, "Test", [])
+	
+	match [1, 2, 3, 4, 5].size():
 
 
+		
+		var i when i > 4:
+			print("aaaa")
+			
+		_:
+			print("i")
+	
+	
 
 
 func abc(...a) -> float:
@@ -28,3 +38,7 @@ func abc(...a) -> float:
 		sum += i
 
 	return sum
+
+
+
+	
