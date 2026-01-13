@@ -27,6 +27,14 @@ static func linear(a: float, b: float) -> float:
 	return -b / a
 
 
+## See [method ResSolver.linear].
+static func linear_array(coeffs: Array[float]) -> float:
+	if coeffs.size() != 2:
+		_ResLogger.format_error(_SCRIPT, linear_array, "There must be exactly 2 coefficients [a, b]", NAN)
+		return NAN
+	return linear(coeffs[0], coeffs[1])
+
+
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^2 + [param b] * x + [param c] = 0
 ##
 ## [codeblock lang=gdscript]
@@ -35,14 +43,14 @@ static func linear(a: float, b: float) -> float:
 static func quadratic(a: float, b: float, c: float) -> Array[float]:
 	if is_zero_approx(a):
 		var root: float = linear(b, c)
-		return [] if is_nan(root) else [root]
+		if is_nan(root): return [] # Don't use ternary operator it returns Array instead Array[float]
+		return [root]
 
 	var p: float = b / a
 	var q: float = c / a
 	var D: float = p * p - 4 * q
 
-	# The check for 0 must be before the check for the sign
-	if is_zero_approx(D): return [-p / 2]
+	if is_zero_approx(D): return [-p / 2] # The check for 0 must be before the check for the sign
 
 	if D < 0: return []
 
@@ -54,13 +62,21 @@ static func quadratic(a: float, b: float, c: float) -> Array[float]:
 	return roots
 
 
+## See [method ResSolver.quadratic].
+static func quadratic_array(coeffs: Array[float]) -> Array[float]:
+	if coeffs.size() != 3:
+		_ResLogger.format_error(_SCRIPT, quadratic_array, "There must be exactly 3 coefficients [a, b, c]", [])
+		return []
+	return quadratic(coeffs[0], coeffs[1], coeffs[2])
+
+
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^3 + [param b] * x^2 + [param c] * x + [param d] = 0
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.cubic(2, -11, 12, 9) # Returns [-0.5, 3]
 ## [/codeblock]
 ##
-## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect. [br]
+## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000. [br]
 static func cubic(a: float, b: float, c: float, d: float) -> Array[float]:
 	if is_zero_approx(a): return quadratic(b, c, d)
 
@@ -109,13 +125,21 @@ static func cubic(a: float, b: float, c: float, d: float) -> Array[float]:
 	return roots
 
 
+## See [method ResSolver.cubic].
+static func cubic_array(coeffs: Array[float]) -> Array[float]:
+	if coeffs.size() != 4:
+		_ResLogger.format_error(_SCRIPT, cubic_array, "There must be exactly 4 coefficients [a, b, c, d]", [])
+		return []
+	return cubic(coeffs[0], coeffs[1], coeffs[2], coeffs[3])
+
+
 ## Returns a sorted array of real roots of an equation of the form: [param a] * x^4 + [param b] * x^3 + [param c] * x^2 + [param d] * x + [param e] = 0
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
 ## [/codeblock]
 ##
-## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
+## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000. [br]
 static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[float]:
 	if is_zero_approx(a): return cubic(b, c, d, e)
 
@@ -135,7 +159,7 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 
 	var u_values: Array[float] = []
 	if is_zero_approx(q):
-		for u_pow_2 in quadratic(1, p, r):
+		for u_pow_2: float in quadratic(1, p, r):
 			if is_zero_approx(u_pow_2):
 				u_values.append(0)
 			elif u_pow_2 > 0:
@@ -146,9 +170,9 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 	else:
 		var p_pow_2: float = p * p
 		var p_pow_3: float = p_pow_2 * p
-		
+
 		var half_q: float = q / 2
-		
+
 		var cubic_b: float = 2.5 * p
 		var cubic_c: float = 2 * p_pow_2 - r
 		var cubic_d: float = (p_pow_3 - p * r - half_q * half_q) / 2
@@ -159,13 +183,9 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 		var half_q_div_sqrt_p_add_2y: float = half_q / sqrt_p_add_2y
 
 		var new_u_values: Array[float] = quadratic(1, -sqrt_p_add_2y, p_add_y + half_q_div_sqrt_p_add_2y) + quadratic(1, sqrt_p_add_2y, p_add_y - half_q_div_sqrt_p_add_2y)
-		for new_u in new_u_values:
-			var has_u: bool = false
-			for u in u_values:
-				if is_equal_approx(new_u, u):
-					has_u = true
-					break
-			if not has_u: u_values.append(new_u)
+		for new_u: float in new_u_values:
+			if not u_values.any(func(u: float) -> bool: return is_equal_approx(new_u, u)):
+				u_values.append(new_u)
 
 	# Converting back from depressed quartic. x = u - a1 / 4
 	var a1_div_4: float = a1 / 4
@@ -174,32 +194,34 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 	return roots
 
 
-## Returns a sorted array of real roots from separate coefficient arguments.
+## See [method ResSolver.quartic].
+static func quartic_array(coeffs: Array[float]) -> Array[float]:
+	if coeffs.size() != 5:
+		_ResLogger.format_error(_SCRIPT, quartic_array, "There must be exactly 5 coefficients [a, b, c, d, e]", [])
+		return []
+	return quartic(coeffs[0], coeffs[1], coeffs[2], coeffs[3], coeffs[4])
+
+
+## Returns a sorted array of the real roots of an equation based on the number of arguments.
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.solve(1, -3, 2) # Returns [1, 2]
 ## [/codeblock]
 ##
-## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
+## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000. [br]
 static func solve(...coeffs: Array) -> Array[float]:
-	if not ResMath.is_numeric_array(coeffs):
-		_ResLogger.format_error(_SCRIPT, solve, "One of the arguments is not a number", [])
-		return []
-
 	if coeffs.size() > 5:
 		_ResLogger.format_error(_SCRIPT, solve, "There cannot be more than 5 arguments", [])
+		return []
+
+	if not ResMath.is_numeric_array(coeffs):
+		_ResLogger.format_error(_SCRIPT, solve, "One of the arguments is not a number", [])
 		return []
 
 	return solve_array(Array(coeffs, Variant.Type.TYPE_FLOAT, "", null))
 
 
-## Returns a sorted array of real roots from a [float] [Array] of coefficients.
-##
-## [codeblock lang=gdscript]
-## ResSolver.solve_array([1, -3, 2]) # Returns [1, 2]
-## [/codeblock]
-##
-## [b][color=GOLD]Warning:[/color][/b] For large argument values, answers may be inaccurate or incorrect.[br]
+## See [method ResSolver.solve].
 static func solve_array(coeffs: Array[float]) -> Array[float]:
 	if coeffs.size() > 5:
 		_ResLogger.format_error(_SCRIPT, solve_array, "There cannot be more than 5 arguments", [])
@@ -207,9 +229,9 @@ static func solve_array(coeffs: Array[float]) -> Array[float]:
 
 	match coeffs.size():
 		2:
-			var root: float = linear(coeffs[0], coeffs[1])
+			var root: float = linear_array(coeffs)
 			return [] if is_nan(root) else [root]
-		3: return quadratic(coeffs[0], coeffs[1], coeffs[2])
-		4: return cubic(coeffs[0], coeffs[1], coeffs[2], coeffs[3])
-		5: return quartic(coeffs[0], coeffs[1], coeffs[2], coeffs[3], coeffs[4])
+		3: return quadratic_array(coeffs)
+		4: return cubic_array(coeffs)
+		5: return quartic_array(coeffs)
 		_: return []
