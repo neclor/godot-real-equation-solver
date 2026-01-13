@@ -23,7 +23,7 @@ config/icon="uid://wokao2w6ssuo"
 
 [dotnet]
 
-project/assembly_name="RES - Real Equation Solver"
+project/assembly_name="Real Equation Solver"
 
 [editor_plugins]
 

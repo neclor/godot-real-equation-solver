@@ -16,7 +16,7 @@
 const _SCRIPT: GDScript = ResSolver
 
 
-## Returns a real root of an equation of the form: [param a] * x + [param b] = 0
+## Returns a real root of an equation of the form: [param a]x + [param b] = 0.
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.linear(5, -10) # Returns 2
@@ -35,7 +35,7 @@ static func linear_array(coeffs: Array[float]) -> float:
 	return linear(coeffs[0], coeffs[1])
 
 
-## Returns a sorted array of real roots of an equation of the form: [param a] * x^2 + [param b] * x + [param c] = 0
+## Returns a sorted array of real roots of an equation of the form: [param a]x² + [param b]x + [param c] = 0.
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.quadratic(1, 1, -6) # Returns [-3, 2]
@@ -70,7 +70,7 @@ static func quadratic_array(coeffs: Array[float]) -> Array[float]:
 	return quadratic(coeffs[0], coeffs[1], coeffs[2])
 
 
-## Returns a sorted array of real roots of an equation of the form: [param a] * x^3 + [param b] * x^2 + [param c] * x + [param d] = 0
+## Returns a sorted array of real roots of an equation of the form: [param a]x³ + [param b]x² + [param c]x + [param d] = 0.
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.cubic(2, -11, 12, 9) # Returns [-0.5, 3]
@@ -133,7 +133,7 @@ static func cubic_array(coeffs: Array[float]) -> Array[float]:
 	return cubic(coeffs[0], coeffs[1], coeffs[2], coeffs[3])
 
 
-## Returns a sorted array of real roots of an equation of the form: [param a] * x^4 + [param b] * x^3 + [param c] * x^2 + [param d] * x + [param e] = 0
+## Returns a sorted array of real roots of an equation of the form: [param a]x⁴ + [param b]x³ + [param c]x² + [param d]x + [param e] = 0.
 ##
 ## [codeblock lang=gdscript]
 ## ResSolver.quartic(1, -10, 35, -50, 24) # Returns [1, 2, 3, 4]
@@ -152,7 +152,7 @@ static func quartic(a: float, b: float, c: float, d: float, e: float) -> Array[f
 	var half_a1_pow_2: float = half_a1 * half_a1
 	var half_a1_pow_3: float = half_a1_pow_2 * half_a1
 
-	# Converting to a depRessed quartic. x = u - a1 / 4 -> u^4 + p * u^2 + q * u + r = 0
+	# Converting to a depRessed quartic. x = u - a1 / 4 -> u⁴ + p * u² + q * u + r = 0
 	var p: float = (-3.0 / 2.0) * half_a1_pow_2 + b1
 	var q: float = half_a1_pow_3 - half_a1 * b1 + c1
 	var r: float = (-3.0 / 16.0) * (half_a1_pow_2 * half_a1_pow_2) + half_a1_pow_2 * b1 / 4 - half_a1 * c1 / 2 + d1

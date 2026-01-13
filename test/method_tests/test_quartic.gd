@@ -8,6 +8,7 @@ func _init() -> void:
 
 
 func _run_specific_tests() -> void:
-	TestUtils.verify(solver_method, [0, 0, 0, 0, 0], [])
-	TestUtils.verify(solver_method, [0, 0, 0, 1, -1], [1])
-	TestUtils.verify(solver_method, [1, -10, 35, -50, 24], [1, 2, 3, 4])
+	super()
+	verify([0, 0, 0, 0, 0], [])
+	verify([0, 0, 0, 1, -1], [1])
+	verify([1, -10, 35, -50, 24], [1, 2, 3, 4])

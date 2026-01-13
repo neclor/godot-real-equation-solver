@@ -8,6 +8,17 @@ func _init() -> void:
 
 
 func _run_specific_tests() -> void:
-	TestUtils.verify(solver_method, [0, 0, 0], [])
-	TestUtils.verify(solver_method, [0, 1, -1], [1])
-	TestUtils.verify(solver_method, [1, 1, -6], [-3, 2])
+	super()
+	verify([0, 1], [NAN])
+	verify([5, -10], [2])
+
+
+func verify(coeffs: Array[float], roots: Array[float]) -> void:
+	var max_coeff: float = maxf(coeffs.max(), absf(coeffs.min()))
+	if max_coeff >= TestConfig.INACCURACY_LIMIT: return
+
+	roots.sort()
+
+	var result: Array[float] = [solver_method.call(coeffs)]
+	if not TestMath.is_equal_approx_array(roots, result):
+		printerr(solver_method.get_method(), " - coeffs: ", coeffs, " result: ", result, " expected: ", roots)

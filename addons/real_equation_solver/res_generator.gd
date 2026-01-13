@@ -19,7 +19,8 @@ const _SCRIPT: GDScript = ResGenerator
 const _COEFF_AMPLITUDE: int = 10
 
 
-## Returns the coefficients of a equation with the given roots, in the form: a * x + b = 0, where the leading coefficient a is always 1 [br]
+## Returns the coefficients of a equation with the given roots, in the form: ax + b = 0. [br]
+## Where the leading coefficient a is always 1. [br]
 ## The function returns: [code][1, b][/code]
 ##
 ## [codeblock lang=gdscript]
@@ -37,8 +38,9 @@ static func linear_array(roots: Array[float]) -> Array[float]:
 	return linear(roots[0])
 
 
-## Returns the coefficients of a equation with the given roots, in the form: a * x^2 + b * x + c = 0, where the leading coefficient a is always 1 [br]
-## The function returns: [code][1, b, c][/code]
+## Returns the coefficients of a equation with the given roots, in the form: ax² + bx + c = 0. [br]
+## Where the leading coefficient a is always 1. [br]
+## The function returns: [code][1, b, c][/code].
 ##
 ## [codeblock lang=gdscript]
 ## ResGenerator.quadratic(1, 2) # Returns [1, -3, 2]
@@ -65,7 +67,7 @@ static func quadratic_array(roots: Array[float]) -> Array[float]:
 	var c: float
 
 	if roots.is_empty(): 
-		# (x^2 + p) + q = 0
+		# (x² + p) + q = 0
 		var p: float = randi_range(-_COEFF_AMPLITUDE, _COEFF_AMPLITUDE)
 		var q: float = randi_range(1, _COEFF_AMPLITUDE)
 		b = 2 * p
@@ -80,8 +82,9 @@ static func quadratic_array(roots: Array[float]) -> Array[float]:
 	return [1.0, b, c]
 
 
-## Returns the coefficients of a equation with the given roots, in the form: a * x^3 + b * x^2 + c * x + d = 0, where the leading coefficient a is always 1 [br]
-## The function returns: [code][1, b, c, d][/code]
+## Returns the coefficients of a equation with the given roots, in the form: ax³ + bx² + cx + d = 0. [br]
+## Where the leading coefficient a is always 1. [br]
+## The function returns: [code][1, b, c, d][/code].
 ##
 ## [codeblock lang=gdscript]
 ## ResGenerator.cubic(1, 2, 3) # Returns [1, -6, 11, -6]
@@ -115,8 +118,9 @@ static func cubic_array(roots: Array[float]) -> Array[float]:
 	return [1.0, b, c, d]
 
 
-## Returns the coefficients of a equation with the given roots, in the form: a * x^4 + b * x^3 + c * x^2 + d * x + e = 0, where the leading coefficient a is always 1 [br]
-## The function returns: [code][1, b, c, d, e][/code]
+## Returns the coefficients of a equation with the given roots, in the form: ax⁴ + bx³ + cx² + dx + e = 0. [br]
+## Where the leading coefficient a is always 1. [br]
+## The function returns: [code][1, b, c, d, e][/code].
 ##
 ## [codeblock lang=gdscript]
 ## ResGenerator.quartic(1, 2, 3, 4) # Returns [1, -10, 35, -50, 24]
@@ -145,7 +149,7 @@ static func quartic_array(roots: Array[float]) -> Array[float]:
 	var e: float
 
 	if roots.is_empty():
-		# (x^2 + px + q)^2 + r = 0
+		# (x² + px + q)^2 + r = 0
 		var p: float = randi_range(-_COEFF_AMPLITUDE, _COEFF_AMPLITUDE)
 		var q: float = randi_range(-_COEFF_AMPLITUDE, _COEFF_AMPLITUDE)
 		var r: float = randi_range(1, _COEFF_AMPLITUDE)

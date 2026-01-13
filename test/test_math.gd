@@ -4,7 +4,7 @@
 static func is_equal_approx_array(a: Array[float], b: Array[float]) -> bool:
 	if a.size() != b.size(): return false
 	for i: int in a.size():
-		if not is_equal_approx(a[i], b[i]): return false
+		if not (is_equal_approx(a[i], b[i]) or (is_nan(a[i]) and is_nan(b[i]))): return false
 	return true
 
 
@@ -28,7 +28,7 @@ static func randf_range_unique_values(from: float, to: float, amount: int = 1) -
 	for i: int in amount:
 		while true:
 			var value: float = randf_range(from, to)
-			if not unique_values.any(func(i: float) -> bool: return is_equal_approx(i, value) or is_equal_approx_one(i, value)):
+			if not unique_values.any(func(v: float) -> bool: return is_equal_approx(v, value) or is_equal_approx_one(v, value)):
 				unique_values.append(value)
 				break
 
