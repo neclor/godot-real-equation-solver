@@ -66,7 +66,7 @@ See `quadratic()`.
 Array[float] cubic(a: float, b: float, c: float, d: float) static
 ```
 Returns a sorted array of real roots of an equation of the form: ax³ + bx² + cx + d = 0.  
-Warning: For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
+**Warning:** For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
 
 ```gdscript
 Array[float] cubic_array(coeffs: Array[float]) static
@@ -77,7 +77,7 @@ See `cubic()`.
 Array[float] quartic(a: float, b: float, c: float, d: float, e: float) static
 ```
 Returns a sorted array of real roots of an equation of the form: ax⁴ + bx³ + cx² + dx + e = 0.  
-Warning: For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
+**Warning:** For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
 
 ```gdscript
 Array[float] quartic_array(coeffs: Array[float]) static
@@ -88,7 +88,7 @@ See `quartic()`.
 Array[float] solve(...coeffs: Array) vararg static
 ```
 Returns a sorted array of the real roots of an equation based on the number of arguments.  
-Warning: For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
+**Warning:** For large argument values, answers may be inaccurate or incorrect, e.g. >= 10_000_000.
 
 ```gdscript
 Array[float] solve_array(coeffs: Array[float]) static
@@ -99,45 +99,46 @@ See `solve()`.
 
 ### `ResGenerator`
 
-Returns the coefficients of a equation with the given roots, in the form: ax + b = 0. Where the leading coefficient a is always 1. 
+
 ```gdscript
 Array[float] linear(r0: float) static
 ```
+Returns the coefficients of a equation with the given roots, in the form: ax + b = 0. Where the leading coefficient a is always 1. 
 
-See `linear()`.
 ```gdscript
 Array[float] linear_array(roots: Array[float]) static
 ```
+See `linear()`.
 
-Returns the coefficients of a equation with the given roots, in the form: ax² + bx + c = 0. Where the leading coefficient a is always 1. 
 ```gdscript
 Array[float] quadratic(...roots: Array) vararg static
 ```
+Returns the coefficients of a equation with the given roots, in the form: ax² + bx + c = 0. Where the leading coefficient a is always 1. 
 
-See `quadratic()`.
 ```gdscript
 Array[float] quadratic_array(roots: Array[float]) static
 ```
+See `quadratic()`.
 
-Returns the coefficients of a equation with the given roots, in the form: ax³ + bx² + cx + d = 0, where the leading coefficient a is always 1 
 ```gdscript
 Array[float] cubic(...roots: Array) vararg static
 ```
+Returns the coefficients of a equation with the given roots, in the form: ax³ + bx² + cx + d = 0, where the leading coefficient a is always 1.
 
-See `cubic()`.
 ```gdscript
 Array[float] cubic_array(roots: Array[float]) static
 ```
+See `cubic()`.
 
-Returns the coefficients of a equation with the given roots, in the form: ax⁴ + bx³ + cx² + dx + e = 0, where the leading coefficient a is always 1
 ```gdscript
 Array[float] quartic(...roots: Array) vararg static
 ```
+Returns the coefficients of a equation with the given roots, in the form: ax⁴ + bx³ + cx² + dx + e = 0, where the leading coefficient a is always 1.
 
-See `quartic()`.
 ```gdscript
 Array[float] quartic_array(roots: Array[float]) static
 ```
+See `quartic()`.
 
 ---
 
