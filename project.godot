@@ -19,7 +19,7 @@ config/version="5.0.0"
 config/tags=PackedStringArray("addon")
 config/features=PackedStringArray("4.6", "Forward Plus")
 run/max_fps=30
-config/icon="uid://wokao2w6ssuo"
+config/icon="uid://dcxtvshglkbqq"
 
 [dotnet]
 
