@@ -13,7 +13,7 @@ Equation solver and generator for real-valued polynomial equations up to 4th deg
 ---
 
 ## Download
-- [Asset Store](https://store-beta.godotengine.org/asset/neclor/real-equation-solver)
+- [Asset Store](https://store.godotengine.org/asset/neclor/real-equation-solver/)
 - [Asset Library](https://godotengine.org/asset-library/asset/2998)
 - [GitHub](https://github.com/neclor/godot-real-equation-solver)
 
